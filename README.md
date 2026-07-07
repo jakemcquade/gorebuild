@@ -34,7 +34,7 @@ bounded by a 10-minute timeout so a stuck command can't hang forever.
 
 ```yaml
 server:
-  port: 8765          # optional, defaults to 8080
+  port: 8080          # optional, defaults to 8080
 
 projects:
   disping:            # must match the GitHub repository name
