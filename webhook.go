@@ -12,6 +12,7 @@ import (
 )
 
 var secret string
+var rebuildFn = startRebuild
 
 type pushPayload struct {
 	Ref        string `json:"ref"` // e.g. "refs/heads/main"
@@ -65,14 +66,16 @@ func webhook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Optional branch filter.
-	if branch := strings.TrimPrefix(payload.Ref, "refs/heads/"); branch != "" && branch != project.Branch {
-		log.Printf("Push to %s/%s ignored (watching %q)", repo, branch, project.Branch)
-		reply(w, http.StatusOK, "branch %q ignored\n", branch)
-		return
+	if project.Branch != "" {
+		if branch := strings.TrimPrefix(payload.Ref, "refs/heads/"); branch != project.Branch {
+			log.Printf("Push to %s/%s ignored (watching %q)", repo, branch, project.Branch)
+			reply(w, http.StatusOK, "branch %q ignored\n", branch)
+			return
+		}
 	}
 
 	log.Printf("Push to %q accepted, triggering rebuild", repo)
-	startRebuild(repo, project)
+	rebuildFn(repo, project)
 
 	reply(w, http.StatusAccepted, "rebuilding %q\n", repo)
 }
