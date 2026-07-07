@@ -1,0 +1,16 @@
+# Logs
+logs
+*.log
+json.sqlite
+
+# Env
+.env
+.env.*
+*.env
+!.env.example
+
+# Config
+config.yaml
+
+# Build output
+/gorebuild

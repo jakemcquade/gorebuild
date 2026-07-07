@@ -1,0 +1,7 @@
+server:
+  port: 8080 # port to run the server on (optional, default: 8080)
+
+projects:
+  disping: # name of repository
+    path: ~/path/to/repo
+    branch: main # branch to pull (optional)
